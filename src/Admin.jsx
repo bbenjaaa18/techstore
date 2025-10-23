@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
-import "./App.css";
 import "./Admin.css";
+import "./App.css";
+import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
+
 
 export default function Admin() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
