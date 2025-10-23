@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import "../App.css";
+import "./App.css";
 import "./Admin.css";
 
 export default function Admin() {

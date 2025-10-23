@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import Admin from './pages/Admin';
+import Admin from './Admin';
 
 function App() {
   return (
