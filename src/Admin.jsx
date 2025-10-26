@@ -1,37 +1,14 @@
 import React, { useEffect, useState } from "react";
 import "./Admin.css";
 import "./App.css";
-import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
-
+import {getProducts, createProduct as apiCreateProduct, updateProduct as apiUpdateProduct, deleteProduct as apiDeleteProduct } from "./data";
 
 export default function Admin() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [activeSection, setActiveSection] = useState("dashboard");
   
-  // Estados para los datos
-  const [products, setProducts] = useState([
-    {
-      id: 1,
-      name: "Smartphone Pro Max",
-      price: 499990,
-      image: "imagenes/Pro_Max.jpg",
-      description: "Último modelo con cámara avanzada de 108MP y procesador de última generación."
-    },
-    {
-      id: 2,
-      name: "Audífonos Wireless Pro",
-      price: 199990,
-      image: "imagenes/Wireless_Pro.jpeg",
-      description: "Audífonos inalámbricos con cancelación de ruido activa y 30hrs de batería."
-    },
-    {
-      id: 3,
-      name: "Laptop Gaming Pro",
-      price: 599990,
-      image: "imagenes/Laptop_Gaming_Pro.jpg",
-      description: "Laptop de alto rendimiento para gaming y trabajo profesional."
-    }
-  ]);
+
+const [products, setProducts] = useState(() => getProducts());
 
   const [users, setUsers] = useState([
     {
@@ -170,38 +147,49 @@ export default function Admin() {
     }
 
     if (editingProduct) {
-      // Actualizar producto existente
-      setProducts(prev => prev.map(p => 
-        p.id === editingProduct.id 
-          ? { 
-              ...p, 
-              name: newProduct.name,
-              price: price,
-              image: newProduct.image,
-              description: newProduct.description
-            }
-          : p
-      ));
-    } else {
-      // Crear nuevo producto
-      const newProductObj = {
-        id: Math.max(...products.map(p => p.id), 0) + 1,
+      // 1. Objeto con los cambios
+      const changes = {
         name: newProduct.name,
         price: price,
         image: newProduct.image,
         description: newProduct.description
       };
-      setProducts(prev => [...prev, newProductObj]);
+      
+      // 2. Guardar en data.js (localStorage)
+      const updatedProduct = apiUpdateProduct(editingProduct.id, changes); // 👈 GUARDAR
+      
+      // 3. Actualizar el estado de React
+      setProducts(prev => prev.map(p => 
+        p.id === editingProduct.id 
+          ? updatedProduct // 👈 Usar el producto actualizado
+          : p
+      ));
+
+    } else {
+      // 1. Objeto del nuevo producto (sin ID, data.js lo asigna)
+      const newProductObj = {
+        name: newProduct.name,
+        price: price,
+        image: newProduct.image,
+        description: newProduct.description
+      };
+      
+      // 2. Guardar en data.js (localStorage)
+      const savedProduct = apiCreateProduct(newProductObj); // 👈 GUARDAR
+
+      // 3. Actualizar el estado de React
+      setProducts(prev => [...prev, savedProduct]); // 👈 Usar el producto guardado (con ID)
     }
     
     closeProductModal();
   };
 
   const deleteProduct = (productId) => {
-    if (window.confirm('¿Estás seguro de que quieres eliminar este producto?')) {
-      setProducts(prev => prev.filter(p => p.id !== productId));
-    }
-  };
+  if (window.confirm('¿Estás seguro de que quieres eliminar este producto?')) {
+    apiDeleteProduct(productId); // 👈 ¡SOLUCIONADO! Llama a la función de data.js
+    setProducts(prev => prev.filter(p => p.id !== productId));
+  }
+};
 
   // Admin functions
   const openAdminModal = () => {
