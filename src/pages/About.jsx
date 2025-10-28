@@ -1,3 +1,8 @@
+import fotoJuan from '../imagenes/Juan_Perez.png';
+import fotoMaria from '../imagenes/Maria.png';
+import fotoCarlos from '../imagenes/Carlos.jpg';
+
+
 const About = () => {
     return (
         <section id="nosotros" className="page-section active">
@@ -18,18 +23,57 @@ const About = () => {
                     
                     <h3 style={{ marginTop: '40px' }}>Nuestro Equipo</h3>
                     <div className="team-grid">
+                        
+                        {/* --- FOTO 1 --- */}
                         <div className="team-member">
-                            <div className="team-photo" style={{background: '#ddd', width: '150px', height: '150px', borderRadius: '50%', margin: '0 auto'}}></div>
+                            <img 
+                                src={fotoJuan} 
+                                alt="Foto de Juan Pérez, CEO"
+                                className="team-photo"
+                                style={{
+                                    width: '150px', 
+                                    height: '150px', 
+                                    borderRadius: '50%', 
+                                    margin: '0 auto',
+                                    objectFit: 'cover' // <-- Te recomiendo agregar esto
+                                }}
+                            />
                             <h4>Juan Pérez</h4>
                             <p>CEO & Fundador</p>
                         </div>
+                        
+                        {/* --- FOTO 2 --- */}
                         <div className="team-member">
-                            <div className="team-photo" style={{background: '#ddd', width: '150px', height: '150px', borderRadius: '50%', margin: '0 auto'}}></div>
+                            <img 
+                                src={fotoMaria} 
+                                alt="Foto de María González, Directora de Tecnología"
+                                className="team-photo"
+                                style={{
+                                    width: '150px', 
+                                    height: '150px', 
+                                    borderRadius: '50%', 
+                                    margin: '0 auto',
+                                    objectFit: 'cover'
+                                }}
+                            />
                             <h4>María González</h4>
                             <p>Directora de Tecnología</p>
                         </div>
+                        
+                        {/* --- FOTO 3 --- */}
                         <div className="team-member">
-                            <div className="team-photo" style={{background: '#ddd', width: '150px', height: '150px', borderRadius: '50%', margin: '0 auto'}}></div>
+                            <img 
+                                src={fotoCarlos} 
+                                alt="Foto de Carlos López, Jefe de Ventas"
+                                className="team-photo"
+                                style={{
+                                    width: '150px', 
+                                    height: '150px', 
+                                    borderRadius: '50%', 
+                                    margin: '0 auto',
+                                    objectFit: 'cover'
+                                }}
+                            />
                             <h4>Carlos López</h4>
                             <p>Jefe de Ventas</p>
                         </div>
