@@ -1,66 +1,100 @@
-import { useState } from 'react';
+import React from 'react';
+import '../../styles/Header.css';
 
 const Header = ({ currentPage, onPageChange, cartCount, onCartToggle }) => {
-    const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-    const navItems = [
-        { id: 'inicio', label: 'Inicio', icon: 'fas fa-home' },
-        { id: 'productos', label: 'Productos', icon: 'fas fa-box' },
-        { id: 'nosotros', label: 'Nosotros', icon: 'fas fa-users' },
-        { id: 'blogs', label: 'Blogs', icon: 'fas fa-blog' },
-        { id: 'contacto', label: 'Contacto', icon: 'fas fa-phone' },
-        { id: 'registro', label: 'Registro', icon: 'fas fa-user-plus' },
-        { id: 'login', label: 'Login', icon: 'fas fa-sign-in-alt' }
-    ];
-
     return (
-        <header>
-            <div className="container">
-                <nav className="navbar">
-                    <a href="#" className="navbar-brand" onClick={(e) => {
-                        e.preventDefault();
-                        onPageChange('inicio');
-                    }}>
-                        <span>🛒 TechStore</span>
-                    </a>
-                    
-                    <button 
-                        className="nav-toggle" 
-                        onClick={() => setIsMenuOpen(!isMenuOpen)}
-                    >
-                        <i className="fas fa-bars"></i>
-                    </button>
-                    
-                    <ul className={`nav-menu ${isMenuOpen ? 'active' : ''}`}>
-                        {navItems.map(item => (
-                            <li key={item.id}>
-                                <a 
-                                    href="#" 
-                                    className={`nav-link ${currentPage === item.id ? 'active' : ''}`}
-                                    onClick={(e) => {
-                                        e.preventDefault();
-                                        onPageChange(item.id);
-                                        setIsMenuOpen(false);
-                                    }}
-                                >
-                                    <i className={item.icon}></i> {item.label}
-                                </a>
-                            </li>
-                        ))}
+        <header className="main-header">
+            <div className="header-container">
+                {/* Logo */}
+                <div className="logo">
+                    <h1>TechStore</h1>
+                </div>
+
+                {/* Navegación */}
+                <nav className="main-nav">
+                    <ul className="nav-list">
                         <li>
                             <a 
-                                href="#" 
-                                className="nav-link" 
+                                href="#inicio" 
+                                className={currentPage === 'inicio' ? 'active' : ''}
                                 onClick={(e) => {
                                     e.preventDefault();
-                                    onCartToggle();
+                                    onPageChange('inicio');
                                 }}
                             >
-                                <i className="fas fa-shopping-cart"></i> Carrito ({cartCount})
+                                Inicio
+                            </a>
+                        </li>
+                        <li>
+                            <a 
+                                href="#productos" 
+                                className={currentPage === 'productos' ? 'active' : ''}
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    onPageChange('productos');
+                                }}
+                            >
+                                Productos
+                            </a>
+                        </li>
+                        <li>
+                            <a 
+                                href="#nosotros" 
+                                className={currentPage === 'nosotros' ? 'active' : ''}
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    onPageChange('nosotros');
+                                }}
+                            >
+                                Nosotros
+                            </a>
+                        </li>
+                        <li>
+                            <a 
+                                href="#blogs" 
+                                className={currentPage === 'blogs' ? 'active' : ''}
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    onPageChange('blogs');
+                                }}
+                            >
+                                Blogs
+                            </a>
+                        </li>
+                        <li>
+                            <a 
+                                href="#contacto" 
+                                className={currentPage === 'contacto' ? 'active' : ''}
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    onPageChange('contacto');
+                                }}
+                            >
+                                Contacto
                             </a>
                         </li>
                     </ul>
                 </nav>
+
+                {/* Acciones */}
+                <div className="header-actions">
+                    <button 
+                        className="cart-button"
+                        onClick={onCartToggle}
+                    >
+                        🛒 Carrito
+                        {cartCount > 0 && (
+                            <span className="cart-badge">{cartCount}</span>
+                        )}
+                    </button>
+                    
+                    <button 
+                        className="login-button"
+                        onClick={() => onPageChange('login')}
+                    >
+                        Iniciar Sesión
+                    </button>
+                </div>
             </div>
         </header>
     );

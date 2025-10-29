@@ -1,50 +1,41 @@
-const BlogDetail = ({ blog, onBackClick }) => {
-    if (!blog) return null;
+import React from 'react';
+import '../../styles/BlogDetail.css';
 
-    return (
-        <section id="detalle-blog" className="page-section active">
-            <div className="container">
-                <button className="btn btn-outline" onClick={onBackClick}>
-                    <i className="fas fa-arrow-left"></i> Volver a Blogs
+const BlogDetail = ({ blog, onBackClick }) => {
+    if (!blog) {
+        return (
+            <div className="blog-detail">
+                <button className="back-button" onClick={onBackClick}>
+                    ← Volver a Blogs
                 </button>
-                
-                <div className="blog-detail">
-                    <article style={{ maxWidth: '800px', margin: '20px auto' }}>
-                        <img 
-                            src={blog.image} 
-                            alt={blog.title} 
-                            style={{ 
-                                width: '100%', 
-                                height: '300px', 
-                                objectFit: 'cover', 
-                                borderRadius: '12px', 
-                                marginBottom: '20px' 
-                            }} 
-                        />
-                        <h1 style={{ color: 'var(--primary-color)', marginBottom: '15px' }}>
-                            {blog.title}
-                        </h1>
-                        <div 
-                            className="blog-meta" 
-                            style={{ 
-                                marginBottom: '30px', 
-                                paddingBottom: '15px', 
-                                borderBottom: '2px solid var(--border-color)' 
-                            }}
-                        >
-                            <span><i className="far fa-calendar"></i> {blog.date}</span>
-                            <span style={{ marginLeft: '20px' }}>
-                                <i className="far fa-user"></i> {blog.author}
-                            </span>
-                        </div>
-                        <div 
-                            className="blog-content" 
-                            dangerouslySetInnerHTML={{ __html: blog.content }}
-                        />
-                    </article>
+                <div className="error-message">
+                    <h2>Blog no encontrado</h2>
+                    <p>El blog que buscas no está disponible.</p>
                 </div>
             </div>
-        </section>
+        );
+    }
+
+    return (
+        <div className="blog-detail">
+            <button className="back-button" onClick={onBackClick}>
+                ← Volver a Blogs
+            </button>
+            
+            <div className="blog-detail-content">
+                <div className="blog-detail-image">
+                    <img src={blog.image} alt={blog.title} />
+                </div>
+                
+                <div className="blog-detail-info">
+                    <h1>{blog.title}</h1>
+                    <p className="blog-date">Publicado el: {blog.date}</p>
+                    <div className="blog-content">
+                        <p>{blog.content}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
     );
 };
 

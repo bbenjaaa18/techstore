@@ -1,4 +1,4 @@
-// src/data/admins.js
+// CORREGIDO: src/data/admins.js
 export const initialAdmins = [
   {
     id: 1,

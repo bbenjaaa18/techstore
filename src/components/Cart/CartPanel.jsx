@@ -1,51 +1,71 @@
-import CartItem from './CartItem';
+import React from 'react';
+import '../../styles/CartPanel.css';
 
 const CartPanel = ({ cart, onRemoveFromCart, onClearCart, isOpen, onClose }) => {
-    const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-    const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+    const calculateTotal = () => {
+        return cart.reduce((total, item) => total + (item.price * item.quantity), 0);
+    };
+
+    if (!isOpen) return null;
 
     return (
-        <div className={`cart-panel ${isOpen ? 'active' : ''}`}>
-            <div className="cart-header">
-                <h3><i className="fas fa-shopping-cart"></i> Tu Carrito ({totalItems})</h3>
-                <button className="cart-close-btn" onClick={onClose}>
-                    <i className="fas fa-times"></i>
-                </button>
-            </div>
-            
-            <div className="cart-content">
-                {cart.length === 0 ? (
-                    <div className="empty-cart">
-                        <i className="fas fa-shopping-cart" style={{ fontSize: '3rem', marginBottom: '10px' }}></i>
-                        <p>Tu carrito está vacío</p>
-                    </div>
-                ) : (
-                    <>
-                        <ul className="cart-items">
-                            {cart.map(item => (
-                                <CartItem
-                                    key={item.id}
-                                    item={item}
-                                    onRemoveFromCart={onRemoveFromCart}
-                                />
-                            ))}
-                        </ul>
-                        
-                        <div className="cart-footer">
-                            <p className="cart-total">
-                                Total: <span>${totalPrice.toLocaleString()}</span>
-                            </p>
+        <div className="cart-overlay" onClick={onClose}>
+            <div className="cart-panel" onClick={(e) => e.stopPropagation()}>
+                <div className="cart-header">
+                    <h2>Tu Carrito ({cart.reduce((total, item) => total + item.quantity, 0)})</h2>
+                    <button className="close-btn" onClick={onClose}>×</button>
+                </div>
+
+                <div className="cart-content">
+                    {cart.length === 0 ? (
+                        <div className="empty-cart">
+                            <p>Tu carrito está vacío</p>
+                        </div>
+                    ) : (
+                        <>
+                            <div className="cart-items">
+                                {cart.map((item) => (
+                                    <div key={item.id} className="cart-item">
+                                        <div className="item-info">
+                                            <h4 className="item-name">{item.name}</h4>
+                                            <p className="item-price">
+                                                ${item.price.toLocaleString()} x {item.quantity}
+                                            </p>
+                                            <p className="item-total">
+                                                Total: ${(item.price * item.quantity).toLocaleString()}
+                                            </p>
+                                        </div>
+                                        <button 
+                                            className="remove-btn"
+                                            onClick={() => onRemoveFromCart(item.id)}
+                                        >
+                                            Eliminar
+                                        </button>
+                                    </div>
+                                ))}
+                            </div>
+
+                            <div className="cart-total">
+                                <h3>Total: ${calculateTotal().toLocaleString()}</h3>
+                            </div>
+
                             <div className="cart-actions">
-                                <button className="btn btn-danger" onClick={onClearCart}>
+                                <button 
+                                    className="clear-btn"
+                                    onClick={onClearCart}
+                                >
                                     Vaciar Carrito
                                 </button>
-                                <button className="btn btn-success" style={{ marginTop: '10px' }}>
+                                <button 
+                                    className="checkout-btn"
+                                    onClick={() => alert('¡Gracias por tu compra!')}
+                                >
                                     Finalizar Compra
                                 </button>
                             </div>
-                        </div>
-                    </>
-                )}
+                        </>
+                    )}
+                </div>
             </div>
         </div>
     );
