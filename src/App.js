@@ -13,8 +13,7 @@ import Blogs from './pages/Blogs';
 import Contact from './pages/Contact';
 import Login from './pages/Login';
 import Register from './pages/Register';
-// --- NUEVO IMPORT ---
-import Admin from './pages/Admin'; // 1. Importamos la página de Admin
+import Admin from './pages/Admin'; 
 
 // Importar datos - CORREGIDO
 import { products, blogPosts } from './data/products';

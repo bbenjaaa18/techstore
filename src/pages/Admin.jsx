@@ -1,26 +1,17 @@
-// src/pages/Admin.jsx
 import React, { useState, useEffect } from 'react';
-
-// 1. Importa los estilos y los datos iniciales
 import '../styles/Admin.css';
 import { products as initialProductsObject } from '../data/products.js';
 import { initialUsers } from '../data/users.js';
 import { initialAdmins } from '../data/admins.js';
 
-// 2. Importa los componentes de las secciones
 import AdminDashboard from '../components/Admin/AdminDashboard';
 import AdminProducts from '../components/Admin/AdminProducts';
 import AdminUsers from '../components/Admin/AdminUsers';
 import AdminAdmins from '../components/Admin/AdminAdmins';
-// <-- LÓGICA AGREGADA: Importamos el formulario de productos -->
 import ProductForm from '../components/Admin/ProductForm';
 
-// Se mueve esta línea aquí, DESPUÉS de todos los imports
 const initialProducts = Object.values(initialProductsObject);
 
-// --- COMIENZA EL RESTO DEL CÓDIGO ---
-
-// Hook robusto para localStorage (valida que sea un array)
 const useStickyState = (defaultValue, key) => {
   const [value, setValue] = useState(() => {
     const stickyValue = window.localStorage.getItem(key); 
@@ -52,10 +43,10 @@ const useStickyState = (defaultValue, key) => {
 
 // Se agrega la prop 'onPageChange'
 const Admin = ({ onPageChange }) => {
-  // 3. Estado para manejar la sección activa
+  //Estado para manejar la sección activa
   const [activeSection, setActiveSection] = useState('dashboard');
 
-  // 4. Estados para los datos
+  // Estados para los datos
   const [products, setProducts] = useStickyState(initialProducts, 'products');
   const [users, setUsers] = useStickyState(initialUsers, 'users');
   const [admins, setAdmins] = useStickyState(initialAdmins, 'admins');
@@ -63,7 +54,7 @@ const Admin = ({ onPageChange }) => {
   // Estado para formulario de admin
   const [isAddingAdmin, setIsAddingAdmin] = useState(false);
 
-  // <-- LÓGICA AGREGADA: Estados para el formulario de productos -->
+  // Estados para el formulario de productos 
   const [isAddingProduct, setIsAddingProduct] = useState(false);
   const [productToEdit, setProductToEdit] = useState(null); 
 
@@ -90,7 +81,7 @@ const Admin = ({ onPageChange }) => {
     }
   };
   
-  // Función para guardar el nuevo admin
+  // guardar el nuevo admin
   const handleAddAdmin = (newAdminData) => {
     const newAdmin = {
       id: Date.now(), 
@@ -100,8 +91,9 @@ const Admin = ({ onPageChange }) => {
     setAdmins([...admins, newAdmin]);
     setIsAddingAdmin(false); 
   };
-  
-  // <-- LÓGICA AGREGADA: Funciones para CRUD de Productos -->
+
+//FUNCIONES CRUD PRODUCTOS
+
   const handleAddProduct = (productData) => {
     const newProduct = {
       ...productData,
@@ -110,24 +102,23 @@ const Admin = ({ onPageChange }) => {
       features: ["Característica 1", "Característica 2"]
     };
     setProducts([...products, newProduct]);
-    setIsAddingProduct(false); // Ocultamos el formulario
+    setIsAddingProduct(false); 
   };
   
   const handleUpdateProduct = (updatedProduct) => {
     setProducts(products.map(p => 
       p.id === updatedProduct.id ? updatedProduct : p
     ));
-    setProductToEdit(null); // Ocultamos el formulario
+    setProductToEdit(null);
   };
   
   const handleCancelForm = () => {
     setIsAddingProduct(false);
     setProductToEdit(null);
   }
-  // <-- FIN LÓGICA AGREGADA -->
 
 
-  // Función de 'Cerrar Sesión'
+  //Cerrar Sesión
   const handleLogout = () => {
     localStorage.removeItem('admin-token');
     if (onPageChange) {
@@ -166,7 +157,6 @@ const Admin = ({ onPageChange }) => {
             onShowEditForm={(product) => setProductToEdit(product)}
           />
         );
-      // <-- FIN LÓGICA MODIFICADA -->
 
       case 'users':
         return (

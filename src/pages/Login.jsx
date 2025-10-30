@@ -91,12 +91,6 @@ const Login = ({ onPageChange }) => {
             </span>
           </p>
         </div>
-
-        <div className="demo-credentials">
-          <h4>Credenciales de Demo - Admin:</h4>
-          <p>Email: admin@techstore.com | Contraseña: admin123</p>
-          <p>Email: admin2@techstore.com | Contraseña: admin456</p>
-        </div>
       </div>
     </div>
   );
