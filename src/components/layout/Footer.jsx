@@ -50,7 +50,7 @@ const Footer = () => {
                 </div>
 
                 <div className="footer-bottom">
-                    <p>&copy; 2024 TechStore. Todos los derechos reservados.</p>
+                    <p>&copy; 2025 TechStore. Todos los derechos reservados.</p>
                 </div>
             </div>
         </footer>

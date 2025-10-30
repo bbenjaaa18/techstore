@@ -1,37 +1,31 @@
-// src/components/Admin/ProductForm.jsx
 import React, { useState, useEffect } from 'react';
 
-// Recibimos:
-// - onSave: La función que se ejecuta al guardar (sea 'agregar' o 'actualizar')
-// - onCancel: La función para ocultar el formulario
-// - productToEdit: (Opcional) El producto que estamos editando
+
+
 const ProductForm = ({ onSave, onCancel, productToEdit }) => {
   // Estados para cada campo del formulario
   const [name, setName] = useState('');
   const [price, setPrice] = useState(0);
   const [description, setDescription] = useState('');
-  const [image, setImage] = useState(''); // Usaremos la primera imagen
+  const [image, setImage] = useState('');
 
   // Título del formulario
-  const formTitle = productToEdit ? 'Editar Producto' : 'Agregar Nuevo Producto';
+  const formTitle = productToEdit ? 'Editar Producto' : 'Agregar Nuevo Producto'
 
-  // useEffect se ejecuta si 'productToEdit' cambia.
   // Si estamos editando, rellena el formulario con los datos del producto.
   useEffect(() => {
     if (productToEdit) {
       setName(productToEdit.name || '');
       setPrice(productToEdit.price || 0);
       setDescription(productToEdit.description || '');
-      // Asumimos que la imagen principal es la primera del array 'images'
       setImage(productToEdit.images && productToEdit.images[0] ? productToEdit.images[0] : '');
     } else {
-      // Si no estamos editando (agregando), resetea los campos
       setName('');
       setPrice(0);
       setDescription('');
       setImage('');
     }
-  }, [productToEdit]); // Dependencia: se ejecuta cuando productToEdit cambia
+  }, [productToEdit]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -40,16 +34,14 @@ const ProductForm = ({ onSave, onCancel, productToEdit }) => {
       return;
     }
 
-    // Preparamos los datos guardados en la estructura correcta
     const productData = {
       name: name,
       price: parseInt(price, 10), // Aseguramos que el precio sea un número
       description: description,
-      // Guardamos la imagen en un array, como en tu 'products.js'
       images: [image],
       // Si estamos editando, mantenemos el ID. Si no, onSave lo generará
       id: productToEdit ? productToEdit.id : undefined, 
-      // Si estamos editando, mantenemos el resto de datos (fullDescription, features)
+      // Si estamos editando, mantenemos el resto de datos
       ...(productToEdit ? productToEdit : {})
     };
     

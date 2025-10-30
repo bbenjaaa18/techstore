@@ -5,12 +5,10 @@ const Header = ({ currentPage, onPageChange, cartCount, onCartToggle }) => {
     return (
         <header className="main-header">
             <div className="header-container">
-                {/* Logo */}
                 <div className="logo">
                     <h1>TechStore</h1>
                 </div>
 
-                {/* Navegación */}
                 <nav className="main-nav">
                     <ul className="nav-list">
                         <li>
@@ -76,7 +74,6 @@ const Header = ({ currentPage, onPageChange, cartCount, onCartToggle }) => {
                     </ul>
                 </nav>
 
-                {/* Acciones */}
                 <div className="header-actions">
                     <button 
                         className="cart-button"

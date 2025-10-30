@@ -6,7 +6,6 @@ const Home = ({ products, onProductClick, onAddToCart, onPageChange }) => {
 
     return (
         <div className="home-page">
-            {/* Hero Section */}
             <section className="hero-section">
                 <div className="hero-content">
                     <h1 className="hero-title">Bienvenido a TechStore</h1>
@@ -23,7 +22,6 @@ const Home = ({ products, onProductClick, onAddToCart, onPageChange }) => {
                 </div>
             </section>
 
-            {/* Featured Products */}
             <section className="featured-section">
                 <div className="container">
                     <h2 className="section-title">Productos Destacados</h2>

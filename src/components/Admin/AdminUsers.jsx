@@ -1,7 +1,6 @@
-// src/components/Admin/AdminUsers.jsx
 import React from 'react';
 
-// Recibe la lista de usuarios y la función para eliminarlos
+// Recibe la lista de usuarios y la función para eliminar usuarios
 const AdminUsers = ({ users, onDeleteUser }) => {
   return (
     <div>

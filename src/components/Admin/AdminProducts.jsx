@@ -1,8 +1,4 @@
-// src/components/Admin/AdminProducts.jsx
 import React from 'react';
-// ¡Ya no importamos el formulario aquí, se maneja en Admin.jsx!
-
-// Recibimos las nuevas funciones
 const AdminProducts = ({ 
   products, 
   onDeleteProduct, 
@@ -13,10 +9,9 @@ const AdminProducts = ({
     <div>
       <h2>Gestión de Productos</h2>
       
-      {/* El botón "Agregar" ahora llama a onShowAddForm */}
       <button 
         className="btn-primary"
-        onClick={onShowAddForm} // <-- CAMBIO
+        onClick={onShowAddForm}
       >
         Agregar Nuevo Producto
       </button>
@@ -32,12 +27,12 @@ const AdminProducts = ({
           </tr>
         </thead>
         <tbody>
-          {/* Hacemos la validación de Array aquí también */}
+          
           {Array.isArray(products) && products.map((product) => (
             <tr key={product.id}>
               <td>
-                {/* CORRECCIÓN: Tu data usa 'images', un array. 
-                    Mostramos la primera imagen (images[0]) */}
+                 
+                
                 <img 
                   src={product.images && product.images[0] ? product.images[0] : 'https://via.placeholder.com/50'} 
                   alt={product.name} 
@@ -47,10 +42,10 @@ const AdminProducts = ({
               <td>${product.price}</td>
               <td>{product.description}</td>
               <td className="actions">
-                {/* El botón "Editar" ahora llama a onShowEditForm */}
+                
                 <button 
                   className="btn-warning"
-                  onClick={() => onShowEditForm(product)} // <-- CAMBIO
+                  onClick={() => onShowEditForm(product)} 
                 >
                   Editar
                 </button>

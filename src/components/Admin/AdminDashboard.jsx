@@ -1,4 +1,3 @@
-// src/components/Admin/AdminDashboard.jsx
 import React from 'react';
 
 // Este componente recibe los totales como props

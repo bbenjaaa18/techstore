@@ -35,7 +35,6 @@ const About = () => {
 
     return (
         <div className="about-page">
-            {/* Hero Section */}
             <section className="about-hero">
                 <div className="about-hero-content">
                     <h1>Sobre Nosotros</h1>
@@ -47,7 +46,6 @@ const About = () => {
                 </div>
             </section>
 
-            {/* Mission & Vision */}
             <section className="mission-vision">
                 <div className="container">
                     <div className="mission-vision-grid">
@@ -69,7 +67,6 @@ const About = () => {
                 </div>
             </section>
 
-            {/* Team Section */}
             <section className="team-section">
                 <div className="container">
                     <h2>Nuestro Equipo</h2>
@@ -94,7 +91,6 @@ const About = () => {
                 </div>
             </section>
 
-            {/* Values Section */}
             <section className="values-section">
                 <div className="container">
                     <h2>Nuestros Valores</h2>

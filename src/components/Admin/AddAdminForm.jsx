@@ -1,8 +1,6 @@
-// src/components/Admin/AddAdminForm.jsx
 import React, { useState } from 'react';
 
-// Recibe la función 'onAddAdmin' y 'onHideForm' desde Admin.jsx
-const AddAdminForm = ({ onAddAdmin, onHideForm }) => {
+  const AddAdminForm = ({ onAddAdmin, onHideForm }) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
 
@@ -14,8 +12,6 @@ const AddAdminForm = ({ onAddAdmin, onHideForm }) => {
       return;
     }
 
-    // Llama a la función 'handleAddAdmin' de Admin.jsx
-    // pasándole los datos del formulario
     onAddAdmin({ name, email });
   };
 

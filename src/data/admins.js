@@ -1,4 +1,3 @@
-// src/data/admins.js
 export const initialAdmins = [
   {
     id: 1,
