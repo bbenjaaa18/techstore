@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import '../styles/Login.css';
 
 const Login = ({ onPageChange }) => {
@@ -7,7 +7,7 @@ const Login = ({ onPageChange }) => {
   const [error, setError] = useState('');
 
   const handleAdminLogin = (email, password) => {
-    // Credenciales de administrador (en producción esto vendría de una API)
+    // Credenciales de administrador
     const adminCredentials = [
       { email: 'admin@techstore.com', password: 'admin123' },
       { email: 'admin2@techstore.com', password: 'admin456' }
@@ -34,8 +34,7 @@ const Login = ({ onPageChange }) => {
       return;
     }
 
-    // Si no es admin, intentar login como usuario normal
-    // Aquí iría la lógica para usuarios normales
+    // Si no es admin, mostrar error
     setError('Credenciales incorrectas. Intente nuevamente.');
   };
 

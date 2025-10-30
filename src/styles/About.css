@@ -3,7 +3,7 @@
 }
 
 .about-hero {
-    background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
     color: white;
     padding: 4rem 1rem;
     text-align: center;
@@ -28,12 +28,7 @@
 
 .mission-vision {
     padding: 4rem 1rem;
-    background: #f8fafc;
-}
-
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
+    background: var(--background);
 }
 
 .mission-vision-grid {
@@ -51,14 +46,14 @@
 }
 
 .mission-card h3, .vision-card h3 {
-    color: #2563eb;
+    color: var(--primary);
     font-size: 1.8rem;
     margin-bottom: 1.5rem;
     font-weight: 700;
 }
 
 .mission-card p, .vision-card p {
-    color: #64748b;
+    color: var(--text-light);
     line-height: 1.6;
     font-size: 1.1rem;
 }
@@ -71,14 +66,14 @@
 .team-section h2 {
     text-align: center;
     font-size: 2.5rem;
-    color: #1e293b;
+    color: var(--text);
     margin-bottom: 1rem;
     font-weight: 700;
 }
 
 .team-subtitle {
     text-align: center;
-    color: #64748b;
+    color: var(--text-light);
     font-size: 1.2rem;
     margin-bottom: 3rem;
 }
@@ -95,7 +90,7 @@
     border-radius: 12px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     transition: all 0.3s ease;
-    border: 1px solid #e2e8f0;
+    border: 1px solid var(--border);
     overflow: hidden;
 }
 
@@ -123,32 +118,32 @@
 .team-info h3 {
     font-size: 1.4rem;
     font-weight: 700;
-    color: #1e293b;
+    color: var(--text);
     margin-bottom: 0.5rem;
 }
 
 .position {
-    color: #2563eb;
+    color: var(--primary);
     font-weight: 600;
     margin-bottom: 1rem;
     font-size: 1.1rem;
 }
 
 .description {
-    color: #64748b;
+    color: var(--text-light);
     line-height: 1.5;
     font-size: 0.95rem;
 }
 
 .values-section {
     padding: 4rem 1rem;
-    background: #f8fafc;
+    background: var(--background);
 }
 
 .values-section h2 {
     text-align: center;
     font-size: 2.5rem;
-    color: #1e293b;
+    color: var(--text);
     margin-bottom: 3rem;
     font-weight: 700;
 }
@@ -174,13 +169,13 @@
 
 .value-card h4 {
     font-size: 1.3rem;
-    color: #1e293b;
+    color: var(--text);
     margin-bottom: 1rem;
     font-weight: 600;
 }
 
 .value-card p {
-    color: #64748b;
+    color: var(--text-light);
     line-height: 1.5;
 }
 

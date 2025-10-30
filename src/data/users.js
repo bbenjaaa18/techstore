@@ -1,4 +1,3 @@
-// src/data/users.js
 export const initialUsers = [
   {
     id: 1,
