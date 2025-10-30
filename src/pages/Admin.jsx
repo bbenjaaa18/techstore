@@ -1,196 +1,250 @@
-import React, { useState } from 'react';
+// src/pages/Admin.jsx
+import React, { useState, useEffect } from 'react';
+
+// 1. Importa los estilos y los datos iniciales
 import '../styles/Admin.css';
+import { products as initialProductsObject } from '../data/products.js';
+import { initialUsers } from '../data/users.js';
+import { initialAdmins } from '../data/admins.js';
 
+// 2. Importa los componentes de las secciones
+import AdminDashboard from '../components/Admin/AdminDashboard';
+import AdminProducts from '../components/Admin/AdminProducts';
+import AdminUsers from '../components/Admin/AdminUsers';
+import AdminAdmins from '../components/Admin/AdminAdmins';
+// <-- LÓGICA AGREGADA: Importamos el formulario de productos -->
+import ProductForm from '../components/Admin/ProductForm';
+
+// Se mueve esta línea aquí, DESPUÉS de todos los imports
+const initialProducts = Object.values(initialProductsObject);
+
+// --- COMIENZA EL RESTO DEL CÓDIGO ---
+
+// Hook robusto para localStorage (valida que sea un array)
+const useStickyState = (defaultValue, key) => {
+  const [value, setValue] = useState(() => {
+    const stickyValue = window.localStorage.getItem(key); 
+    
+    if (stickyValue !== null) {
+      try {
+        const parsedValue = JSON.parse(stickyValue);
+        
+        if (Array.isArray(defaultValue)) {
+          if (Array.isArray(parsedValue)) {
+            return parsedValue;
+          }
+        } else {
+          return parsedValue;
+        }
+      } catch (e) {
+        console.error("Error al parsear localStorage", e);
+      }
+    }
+    return defaultValue;
+  });
+
+  useEffect(() => {
+    window.localStorage.setItem(key, JSON.stringify(value));
+  }, [key, value]);
+
+  return [value, setValue];
+};
+
+// Se agrega la prop 'onPageChange'
 const Admin = ({ onPageChange }) => {
-  const [currentSection, setCurrentSection] = useState('dashboard');
+  // 3. Estado para manejar la sección activa
+  const [activeSection, setActiveSection] = useState('dashboard');
 
-  const handleLogout = () => {
-    localStorage.removeItem('admin-token');
-    onPageChange('inicio');
-  };
+  // 4. Estados para los datos
+  const [products, setProducts] = useStickyState(initialProducts, 'products');
+  const [users, setUsers] = useStickyState(initialUsers, 'users');
+  const [admins, setAdmins] = useStickyState(initialAdmins, 'admins');
 
-  const renderSection = () => {
-    switch (currentSection) {
-      case 'dashboard':
-        return (
-          <div className="admin-section">
-            <h3>Dashboard de Administración</h3>
-            <div className="admin-stats">
-              <div className="stat-card">
-                <div className="stat-number">156</div>
-                <div className="stat-label">Productos Vendidos</div>
-              </div>
-              <div className="stat-card">
-                <div className="stat-number">$12.450.990</div>
-                <div className="stat-label">Ingresos Totales</div>
-              </div>
-              <div className="stat-card">
-                <div className="stat-number">89</div>
-                <div className="stat-label">Clientes Registrados</div>
-              </div>
-              <div className="stat-card">
-                <div className="stat-number">24</div>
-                <div className="stat-label">Pedidos Pendientes</div>
-              </div>
-            </div>
-          </div>
-        );
-      case 'users':
-        return (
-          <div className="admin-section">
-            <h3>Gestión de Usuarios</h3>
-            <table className="admin-table">
-              <thead>
-                <tr>
-                  <th>ID</th>
-                  <th>Nombre</th>
-                  <th>Email</th>
-                  <th>Fecha Registro</th>
-                  <th>Acciones</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>1</td>
-                  <td>Ana García</td>
-                  <td>ana.garcia@example.com</td>
-                  <td>2024-10-01</td>
-                  <td>
-                    <button className="action-btn edit-btn">Editar</button>
-                    <button className="action-btn delete-btn">Eliminar</button>
-                  </td>
-                </tr>
-                <tr>
-                  <td>2</td>
-                  <td>Luis Torres</td>
-                  <td>luis.torres@example.com</td>
-                  <td>2024-10-15</td>
-                  <td>
-                    <button className="action-btn edit-btn">Editar</button>
-                    <button className="action-btn delete-btn">Eliminar</button>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        );
-      case 'products':
-        return (
-          <div className="admin-section">
-            <h3>Gestión de Productos</h3>
-            <table className="admin-table">
-              <thead>
-                <tr>
-                  <th>ID</th>
-                  <th>Nombre</th>
-                  <th>Precio</th>
-                  <th>Stock</th>
-                  <th>Acciones</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>1</td>
-                  <td>Smartphone Pro</td>
-                  <td>$499.990</td>
-                  <td>15</td>
-                  <td>
-                    <button className="action-btn edit-btn">Editar</button>
-                    <button className="action-btn delete-btn">Eliminar</button>
-                  </td>
-                </tr>
-                <tr>
-                  <td>2</td>
-                  <td>Laptop Gaming</td>
-                  <td>$899.990</td>
-                  <td>8</td>
-                  <td>
-                    <button className="action-btn edit-btn">Editar</button>
-                    <button className="action-btn delete-btn">Eliminar</button>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        );
-      case 'admins':
-        return (
-          <div className="admin-section">
-            <h3>Gestión de Administradores</h3>
-            <table className="admin-table">
-              <thead>
-                <tr>
-                  <th>ID</th>
-                  <th>Nombre</th>
-                  <th>Email</th>
-                  <th>Fecha Creación</th>
-                  <th>Acciones</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>1</td>
-                  <td>Admin Principal</td>
-                  <td>admin@techstore.com</td>
-                  <td>2024-01-01</td>
-                  <td>
-                    <button className="action-btn edit-btn">Editar</button>
-                  </td>
-                </tr>
-                <tr>
-                  <td>2</td>
-                  <td>Admin Secundario</td>
-                  <td>admin2@techstore.com</td>
-                  <td>2024-02-01</td>
-                  <td>
-                    <button className="action-btn edit-btn">Editar</button>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        );
-      default:
-        return <div>Sección no encontrada</div>;
+  // Estado para formulario de admin
+  const [isAddingAdmin, setIsAddingAdmin] = useState(false);
+
+  // <-- LÓGICA AGREGADA: Estados para el formulario de productos -->
+  const [isAddingProduct, setIsAddingProduct] = useState(false);
+  const [productToEdit, setProductToEdit] = useState(null); 
+
+  // 5. Funciones CRUD
+  const handleDeleteProduct = (productId) => {
+    if (window.confirm("¿Estás seguro de que quieres eliminar este producto?")) {
+      setProducts(products.filter(p => p.id !== productId));
     }
   };
 
-  return (
-    <div className="admin-container">
-      <div className="admin-sidebar">
-        <h2>Panel de Administración</h2>
-        <nav className="admin-nav">
-          <button 
-            onClick={() => setCurrentSection('dashboard')}
-            className={currentSection === 'dashboard' ? 'active' : ''}
-          >
-            Dashboard
-          </button>
-          <button 
-            onClick={() => setCurrentSection('users')}
-            className={currentSection === 'users' ? 'active' : ''}
-          >
-            Usuarios
-          </button>
-          <button 
-            onClick={() => setCurrentSection('products')}
-            className={currentSection === 'products' ? 'active' : ''}
-          >
-            Productos
-          </button>
-          <button 
-            onClick={() => setCurrentSection('admins')}
-            className={currentSection === 'admins' ? 'active' : ''}
-          >
-            Administradores
-          </button>
-        </nav>
-        <button onClick={handleLogout} className="logout-btn">Cerrar Sesión</button>
-      </div>
+  const handleDeleteUser = (userId) => {
+     if (window.confirm("¿Estás seguro de que quieres eliminar este usuario?")) {
+      setUsers(users.filter(u => u.id !== userId));
+     }
+  };
+
+  const handleDeleteAdmin = (adminId) => {
+    if (admins.length <= 1) {
+      alert("No puedes eliminar al último administrador.");
+      return;
+    }
+    if (window.confirm("¿Estás seguro de que quieres eliminar a este administrador?")) {
+      setAdmins(admins.filter(a => a.id !== adminId));
+    }
+  };
+  
+  // Función para guardar el nuevo admin
+  const handleAddAdmin = (newAdminData) => {
+    const newAdmin = {
+      id: Date.now(), 
+      ...newAdminData,
+      creationDate: new Date().toISOString().split('T')[0]
+    };
+    setAdmins([...admins, newAdmin]);
+    setIsAddingAdmin(false); 
+  };
+  
+  // <-- LÓGICA AGREGADA: Funciones para CRUD de Productos -->
+  const handleAddProduct = (productData) => {
+    const newProduct = {
+      ...productData,
+      id: productData.name.toLowerCase().replace(/\s+/g, '-'), 
+      fullDescription: "Descripción completa pendiente.",
+      features: ["Característica 1", "Característica 2"]
+    };
+    setProducts([...products, newProduct]);
+    setIsAddingProduct(false); // Ocultamos el formulario
+  };
+  
+  const handleUpdateProduct = (updatedProduct) => {
+    setProducts(products.map(p => 
+      p.id === updatedProduct.id ? updatedProduct : p
+    ));
+    setProductToEdit(null); // Ocultamos el formulario
+  };
+  
+  const handleCancelForm = () => {
+    setIsAddingProduct(false);
+    setProductToEdit(null);
+  }
+  // <-- FIN LÓGICA AGREGADA -->
+
+
+  // Función de 'Cerrar Sesión'
+  const handleLogout = () => {
+    localStorage.removeItem('admin-token');
+    if (onPageChange) {
+      onPageChange('inicio');
+    }
+  };
+
+  // 6. Función para renderizar el contenido de la sección activa
+  const renderSection = () => {
+    switch (activeSection) {
+      case 'dashboard':
+        return (
+          <AdminDashboard 
+            productsCount={products.length}
+            usersCount={users.length}
+            adminsCount={admins.length}
+          />
+        );
       
-      <div className="admin-content">
+      // <-- LÓGICA MODIFICADA: Ahora 'products' decide si muestra la tabla o el formulario -->
+      case 'products':
+        if (isAddingProduct || productToEdit) {
+          return (
+            <ProductForm
+              productToEdit={productToEdit} 
+              onSave={productToEdit ? handleUpdateProduct : handleAddProduct}
+              onCancel={handleCancelForm}
+            />
+          );
+        }
+        return (
+          <AdminProducts 
+            products={products}
+            onDeleteProduct={handleDeleteProduct} 
+            onShowAddForm={() => setIsAddingProduct(true)}
+            onShowEditForm={(product) => setProductToEdit(product)}
+          />
+        );
+      // <-- FIN LÓGICA MODIFICADA -->
+
+      case 'users':
+        return (
+          <AdminUsers 
+            users={users} 
+            onDeleteUser={handleDeleteUser} 
+          />
+        );
+      case 'admins':
+        return (
+          <AdminAdmins 
+            admins={admins}
+            onDeleteAdmin={handleDeleteAdmin}
+            isAdding={isAddingAdmin} 
+            onShowForm={() => setIsAddingAdmin(true)}
+            onHideForm={() => setIsAddingAdmin(false)}
+            onAddAdmin={handleAddAdmin}
+          />
+        );
+      default:
+        return <AdminDashboard />;
+    }
+  };
+
+  // 7. Renderizado del componente (Sidebar + Contenido)
+  return (
+    <div className="admin-panel">
+      <nav className="admin-sidebar">
+        <h3>Panel Admin</h3>
+        <ul>
+          <li>
+            <button 
+              className={activeSection === 'dashboard' ? 'active' : ''}
+              onClick={() => setActiveSection('dashboard')}
+            >
+              Dashboard
+            </button>
+          </li>
+          <li>
+            <button 
+              className={activeSection === 'products' ? 'active' : ''}
+              onClick={() => setActiveSection('products')}
+            >
+              Productos
+            </button>
+          </li>
+          <li>
+            <button 
+              className={activeSection === 'users' ? 'active' : ''}
+              onClick={() => setActiveSection('users')}
+            >
+              Usuarios
+            </button>
+          </li>
+          <li>
+            <button 
+              className={activeSection === 'admins' ? 'active' : ''}
+              onClick={() => setActiveSection('admins')}
+            >
+              Administradores
+            </button>
+          </li>
+
+          <li style={{ marginTop: '20px', borderTop: '1px solid #004cffff', paddingTop: '10px' }}>
+            <button 
+              onClick={handleLogout} 
+              className="btn-danger"
+              style={{ width: '100%', color: 'red' }}
+            >
+              Cerrar Sesión
+            </button>
+          </li>
+        </ul>
+      </nav>
+
+      <main className="admin-content">
         {renderSection()}
-      </div>
+      </main>
     </div>
   );
 };

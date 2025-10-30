@@ -13,24 +13,27 @@ import Blogs from './pages/Blogs';
 import Contact from './pages/Contact';
 import Login from './pages/Login';
 import Register from './pages/Register';
-import Admin from './pages/Admin';
+// --- NUEVO IMPORT ---
+import Admin from './pages/Admin'; // 1. Importamos la página de Admin
 
-// Importar datos
+// Importar datos - CORREGIDO
 import { products, blogPosts } from './data/products';
-import { initialUsers } from './data/users';
-import { initialAdmins } from './data/admins';
 
 // Importar CSS
 import './styles/App.css';
 
 function App() {
-    const [currentPage, setCurrentPage] = useState('inicio');
+    // DEBUG: Verificar que los datos se carguen
+    console.log('Productos cargados:', products);
+    console.log('Blogs cargados:', blogPosts);
+
+    const [currentPage, setCurrentPage] = useState('productos'); // Tu estado
     const [cart, setCart] = useState([]);
     const [isCartOpen, setIsCartOpen] = useState(false);
     const [selectedProduct, setSelectedProduct] = useState(null);
     const [selectedBlog, setSelectedBlog] = useState(null);
 
-    // Funciones del carrito
+    // Funciones del carrito (Sin cambios)
     const addToCart = (id, name, price) => {
         setCart(prevCart => {
             const existingItem = prevCart.find(item => item.id === id);
@@ -42,16 +45,14 @@ function App() {
             return [...prevCart, { id, name, price, quantity: 1 }];
         });
     };
-
     const removeFromCart = (id) => {
         setCart(prevCart => prevCart.filter(item => item.id !== id));
     };
-
     const clearCart = () => {
         setCart([]);
     };
 
-    // Funciones de navegación
+    // Funciones de navegación (Sin cambios)
     const handlePageChange = (page) => {
         console.log('Cambiando a página:', page);
         setCurrentPage(page);
@@ -59,7 +60,6 @@ function App() {
         setSelectedBlog(null);
         setIsCartOpen(false);
     };
-
     const handleProductClick = (productId) => {
         console.log('Producto clickeado:', productId);
         if (productId === 'productos') {
@@ -69,43 +69,44 @@ function App() {
             setCurrentPage('detalle-producto');
         }
     };
-
     const handleBlogClick = (blogId) => {
         console.log('Blog clickeado:', blogId);
         setSelectedBlog(blogId);
         setCurrentPage('detalle-blog');
     };
-
     const handleCartToggle = () => {
         setIsCartOpen(!isCartOpen);
     };
-
     const handleCloseCart = () => {
         setIsCartOpen(false);
     };
 
-    // Calcular total del carrito
+    // Calcular total del carrito (Sin cambios)
     const cartCount = cart.reduce((total, item) => total + item.quantity, 0);
 
-    // Función para renderizar páginas
+    // ================================================
+    // --- MODIFICACIÓN IMPORTANTE AQUÍ ---
+    // ================================================
     const renderPage = () => {
         console.log('Renderizando página:', currentPage);
 
-        // Protección de ruta admin
+        // --- 2. EL "GUARDIA DE SEGURIDAD" ---
+        // Antes de mostrar cualquier página, hacemos esta comprobación:
         if (currentPage === 'admin') {
             const token = localStorage.getItem('admin-token');
             if (!token) {
+                // Si el usuario intenta ir a 'admin' SIN TOKEN,
+                // lo forzamos a la página de 'login'.
+                // Usamos 'Login' directamente en lugar de 'setCurrentPage'
+                // para evitar un bucle infinito de renderizado.
                 console.log("Acceso denegado a Admin. Redirigiendo a login.");
-                return (
-                    <div className="acceso-denegado">
-                        <p>Redirigiendo al login...</p>
-                        <Login onPageChange={handlePageChange} />
-                    </div>
-                );
+                return <Login onPageChange={handlePageChange} />;
             }
+            // Si el token SÍ existe, la función continúa
+            // y el switch de abajo mostrará la página de Admin.
         }
         
-        // Páginas de detalle primero
+        // Páginas de detalle primero (Sin cambios)
         if (currentPage === 'detalle-producto' && selectedProduct) {
             const product = products[selectedProduct];
             console.log('Mostrando detalle de producto:', product);
@@ -129,6 +130,7 @@ function App() {
             );
         }
 
+        // --- 3. MODIFICACIÓN DEL SWITCH ---
         // Páginas principales
         switch (currentPage) {
             case 'inicio':
@@ -137,7 +139,6 @@ function App() {
                         products={products}
                         onProductClick={handleProductClick}
                         onAddToCart={addToCart}
-                        onPageChange={handlePageChange}
                     />
                 );
             case 'productos':
@@ -163,20 +164,26 @@ function App() {
                 return <Login onPageChange={handlePageChange} />;
             case 'registro':
                 return <Register onPageChange={handlePageChange} />;
+            
+            // --- NUEVO CASE PARA ADMIN ---
             case 'admin':
+                // Ya estamos protegidos por el "Guardia" de arriba.
+                // Si llegamos aquí, es seguro renderizar Admin.
+                // Le pasamos 'onPageChange' para que su botón de logout funcione.
                 return <Admin onPageChange={handlePageChange} />;
+
             default:
                 return (
                     <Home
                         products={products}
                         onProductClick={handleProductClick}
                         onAddToCart={addToCart}
-                        onPageChange={handlePageChange}
                     />
                 );
         }
     };
 
+    // El return principal de App (Sin cambios)
     return (
         <div className="App">
             <Header
